@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MinitCare devlog</title>
+<style>
+  body { font-family: 'Helvetica Neue', sans-serif; background: #0f0f12; color: #e0e0e8; max-width: 720px; margin: 0 auto; padding: 32px 20px; }
+  h1 { font-size: 22px; color: #c4b5fd; margin-bottom: 4px; }
+  .subtitle { font-size: 12px; color: #666; margin-bottom: 48px; }
+  .entry { border-left: 3px solid #c4b5fd; padding: 0 0 40px 24px; margin-bottom: 8px; }
+  .entry-date { font-size: 11px; color: #888; margin-bottom: 4px; }
+  .entry-title { font-size: 18px; font-weight: 700; color: #ddd6fe; margin-bottom: 16px; }
+  h3 { font-size: 12px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: .08em; margin: 16px 0 6px; }
+  ul { margin: 0; padding-left: 18px; }
+  li { font-size: 14px; line-height: 1.8; color: #ccc; }
+  .warn { color: #f59e0b; }
+  .tag { display: inline-block; font-size: 10px; padding: 2px 8px; border-radius: 4px; background: #1e1a2e; color: #c4b5fd; border: 1px solid #c4b5fd44; margin-right: 4px; }
+</style>
+</head>
+<body>
+<h1>MinitCare devlog</h1>
+<p class="subtitle">mimitday / minitcare — 更新記録</p>
+
+<div class="entry">
+  <div class="entry-date">2026-06-08</div>
+  <div class="entry-title">呼吸リセット追加・インライン広告削除・ポータル並び替え</div>
+
+  <h3>やったこと</h3>
+  <ul>
+    <li><span class="tag">app</span> インライン広告をタイマー画面から完全削除（CSS / HTML / JS）</li>
+    <li><span class="tag">app</span> 呼吸リセットメニュー追加（6ステップ × 30秒 = 3分）</li>
+    <li><span class="tag">minitstretch</span> 同じくインライン広告削除 → push 済み</li>
+    <li><span class="tag">portal</span> mimilyappdev の Minit セクション並び替え：MinitCare → MinitStretch → SmallPump → CozyPost → THE EDIT</li>
+  </ul>
+
+  <h3>検討・決定事項</h3>
+  <ul>
+    <li>3アプリをタブで統合する案 → 却下。「爆速起動」ブランドと相反するため。別々 + ポータルで十分</li>
+    <li>PWA 化がユーザー的に最善（ホーム画面インストール）→ 未着手、次タスク</li>
+    <li>AdSense はツール系コンテンツ不足で審査×。収益化は Booth 直販 or 投げ銭に寄せる方針に決定</li>
+  </ul>
+
+  <h3 class="warn">⚠ 却下・ダメだったこと</h3>
+  <ul>
+    <li class="warn">AdSense：ツール系単ページはテキストコンテンツ不足で通らない（2アプリ時に申請済み）</li>
+    <li class="warn">3アプリ統合タブ案：起動のシンプルさが失われるため不採用</li>
+  </ul>
+
+  <h3>残タスク</h3>
+  <ul>
+    <li>PWA 対応（manifest.json + service worker）</li>
+    <li>収益化手段の選定（Booth 直販 / Buy Me a Coffee / Stripe）</li>
+    <li>LP の「タイマー中に広告は表示しません」コピーは広告削除済みで一致 ✓</li>
+  </ul>
+</div>
+
+</body>
+</html>
