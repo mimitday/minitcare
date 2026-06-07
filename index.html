@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0d0b14" />
+<title>MinitCare | 頭皮・顔まわりのセルフマッサージ</title>
+<style>
+:root{
+  --bg:#0d0b14;
+  --bg2:#1a1525;
+  --paper:#1e192c;
+  --card:#251f36;
+  --ink:#f5f2ff;
+  --muted:#bbb5cc;
+  --soft:#7f7a95;
+  --line:rgba(255,255,255,.09);
+  --accent:#c4b5fd;
+  --accent2:#ddd6fe;
+  --accent-dim:rgba(196,181,253,.12);
+  --deep:#07060c;
+  --shadow:0 24px 60px rgba(0,0,0,.45);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(196,181,253,.18), transparent 34%),
+    radial-gradient(circle at 90% 10%, rgba(167,139,250,.10), transparent 30%),
+    var(--bg);
+  color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",Meiryo,"Segoe UI",system-ui,sans-serif;
+  line-height:1.75;
+}
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.13;
+  background-image:radial-gradient(rgba(244,241,234,.30) .7px, transparent .7px);
+  background-size:20px 20px;
+}
+a{color:inherit;text-decoration:none}
+.wrap{width:min(1120px,calc(100% - 44px));margin:auto}
+
+/* ── Header ── */
+.top{
+  min-height:82px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:22px;
+  position:relative;
+  z-index:2;
+}
+.brand{display:flex;align-items:center;gap:12px;font-weight:900;letter-spacing:.01em;}
+.mark{
+  width:42px;height:42px;border-radius:14px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#1a0f35;
+  display:grid;place-items:center;
+  font-weight:950;font-size:18px;
+  box-shadow:0 12px 28px rgba(196,181,253,.24);
+}
+.brandText{font-size:23px}
+.nav{
+  display:flex;align-items:center;gap:24px;
+  font-weight:750;font-size:14px;color:#d4cef0;
+}
+.cta{
+  display:inline-flex;align-items:center;justify-content:center;
+  border:0;border-radius:18px;
+  background:var(--accent);color:#1a0f35;
+  padding:14px 24px;font-weight:900;
+  box-shadow:0 16px 30px rgba(196,181,253,.22);
+  cursor:pointer;
+}
+.cta.secondary{
+  background:transparent;color:var(--ink);
+  border:1px solid var(--line);box-shadow:none;
+}
+
+/* ── Hero ── */
+.hero{
+  display:grid;grid-template-columns:.95fr 1.05fr;
+  gap:52px;align-items:center;
+  padding:70px 0 76px;
+  border-bottom:1px solid var(--line);
+}
+.kicker{
+  color:var(--accent2);font-weight:900;font-size:14px;
+  letter-spacing:.08em;margin-bottom:14px;
+}
+.hero h1{
+  font-size:clamp(40px,5.2vw,68px);
+  line-height:1.16;letter-spacing:-.055em;
+  margin:0 0 20px;font-weight:950;
+}
+.lead{font-size:20px;font-weight:850;margin:0 0 18px;}
+.desc{margin:0 0 24px;color:var(--muted);}
+.checks{
+  display:grid;gap:9px;margin:0 0 28px;
+  padding:0;list-style:none;font-weight:750;
+}
+.checks li:before{
+  content:"✓";
+  display:inline-grid;place-items:center;
+  width:22px;height:22px;border-radius:50%;
+  background:var(--accent-dim);color:var(--accent2);
+  font-size:13px;margin-right:10px;
+}
+.heroButtons{display:flex;gap:12px;flex-wrap:wrap}
+.subnote{font-size:12px;color:#88839f;margin-top:12px;}
+
+/* ── Phone mockup ── */
+.mockArea{
+  display:grid;grid-template-columns:1fr .85fr;
+  gap:18px;align-items:center;
+}
+.phone{
+  background:#07060c;border-radius:38px;padding:10px;
+  box-shadow:var(--shadow);aspect-ratio:9/18.5;
+}
+.screen{
+  height:100%;border-radius:30px;
+  background:linear-gradient(180deg,#1a1525,#0d0b14);
+  overflow:hidden;color:var(--ink);
+  position:relative;padding:16px;
+  border:1px solid rgba(255,255,255,.05);
+  display:flex;flex-direction:column;gap:8px;
+}
+.mock-status{
+  display:flex;justify-content:space-between;
+  color:#ccc;font-size:9px;font-weight:800;opacity:.7;
+}
+.mock-topbar{
+  display:flex;justify-content:space-between;align-items:center;
+}
+.mock-brand{color:#7f7a95;font-size:10px;font-weight:800;letter-spacing:.06em;}
+.mock-time-wrap{text-align:right;}
+.mock-remain{color:#9990b8;font-size:10px;}
+.mock-time{font-size:20px;font-weight:950;letter-spacing:.03em;color:#9990b8;}
+.mock-progress-thin{height:4px;border-radius:999px;background:rgba(255,255,255,.12);overflow:hidden;margin-bottom:2px;}
+.mock-progress-thin > div{height:100%;width:62%;background:var(--accent);border-radius:inherit;}
+.mock-picto{
+  flex:1;border-radius:20px;
+  background:radial-gradient(circle at center,rgba(196,181,253,.10),rgba(196,181,253,.03) 55%,rgba(255,255,255,.01));
+  border:1px solid rgba(196,181,253,.10);
+  display:grid;place-items:center;
+}
+.mock-picto svg{
+  width:76%;height:76%;
+  stroke:#ede8ff;stroke-width:9;fill:none;
+  stroke-linecap:round;stroke-linejoin:round;opacity:.9;
+}
+.mock-picto .accent-stroke{stroke:var(--accent);}
+.mock-move{text-align:center;font-size:13px;font-weight:900;line-height:1.3;}
+.mock-guide{text-align:center;color:#9990b8;font-size:10px;margin-top:2px;}
+.mock-steps{display:flex;gap:3px;justify-content:center;}
+.mock-step-block{height:5px;flex:1;border-radius:999px;background:rgba(255,255,255,.12);}
+.mock-step-block.done,.mock-step-block.cur{background:var(--accent);}
+.mock-next{
+  border-radius:10px;padding:7px 10px;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.05);
+  color:#9990b8;text-align:center;font-size:9px;
+}
+.mock-controls{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.mock-btn{
+  border-radius:10px;padding:8px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.10);
+  color:#9990b8;text-align:center;font-size:9px;font-weight:800;
+}
+.sideCards{display:grid;gap:16px;}
+.miniCard{
+  background:rgba(255,255,255,.04);border:1px solid var(--line);
+  border-radius:24px;padding:22px;
+}
+.miniCard b{display:block;font-size:17px;margin-bottom:8px;}
+.miniCard p{margin:0;color:var(--muted);font-size:14px;}
+.adDemo{
+  border:1px dashed rgba(255,255,255,.16);color:#82809d;
+  border-radius:18px;padding:18px;text-align:center;
+  font-size:12px;background:rgba(255,255,255,.02);
+}
+
+/* ── Sections ── */
+.section{padding:58px 0;border-bottom:1px solid var(--line);}
+.sectionTitle{text-align:center;font-size:32px;letter-spacing:-.035em;margin:0 0 34px;}
+
+/* ── Feature grid ── */
+.featureGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;}
+.feature{padding:0 24px;text-align:center;border-right:1px solid var(--line);}
+.feature:last-child{border-right:0}
+.icon{font-size:42px;line-height:1;margin-bottom:16px;}
+.feature h3,.howItem h3{font-size:17px;margin:0 0 8px;}
+.feature p,.howItem p{color:var(--muted);font-size:14px;margin:0;}
+
+/* ── How ── */
+.howGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;}
+.howItem{
+  background:rgba(255,255,255,.04);border:1px solid var(--line);
+  border-radius:24px;padding:26px;
+}
+.num{
+  display:inline-grid;place-items:center;
+  width:34px;height:34px;border-radius:50%;
+  background:var(--accent-dim);color:var(--accent2);
+  font-weight:950;margin-right:10px;
+}
+
+/* ── Menu cards ── */
+.menuGrid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;}
+.menuCard{
+  background:rgba(255,255,255,.04);border:1px solid var(--line);
+  border-radius:20px;padding:20px 14px;text-align:center;
+}
+.menuCard .mIcon{font-size:28px;margin-bottom:10px;}
+.menuCard h4{font-size:15px;font-weight:850;margin:0 0 6px;}
+.menuCard p{color:var(--muted);font-size:12px;margin:0;}
+.menuCard .mDur{
+  display:inline-block;margin-top:10px;
+  background:var(--accent-dim);color:var(--accent2);
+  border-radius:999px;padding:3px 10px;font-size:11px;font-weight:800;
+}
+
+/* ── Banner ── */
+.banner{
+  margin:50px auto;
+  background:linear-gradient(135deg,rgba(196,181,253,.12),rgba(167,139,250,.06));
+  border:1px solid rgba(196,181,253,.18);
+  border-radius:28px;padding:32px 42px;
+  display:grid;grid-template-columns:auto 1fr auto;
+  gap:26px;align-items:center;
+}
+.moonBadge{
+  width:72px;height:72px;border-radius:24px;
+  background:rgba(196,181,253,.10);
+  display:grid;place-items:center;font-size:34px;
+}
+.banner h2{margin:0;font-size:30px;letter-spacing:-.03em;}
+.banner p{margin:4px 0 0;color:var(--muted);}
+
+/* ── Ad ── */
+.adWrap{padding:0 0 28px;}
+.adSpace{
+  border:1px dashed rgba(255,255,255,.12);border-radius:18px;
+  padding:18px;text-align:center;color:#7e7a94;font-size:12px;
+}
+
+/* ── Footer ── */
+.foot{
+  display:flex;justify-content:space-between;gap:18px;
+  padding:0 0 34px;font-size:13px;color:#98939f;
+}
+.links{display:flex;gap:24px;flex-wrap:wrap;}
+
+/* ── Responsive ── */
+@media(max-width:900px){
+  .wrap{width:min(100% - 28px,680px)}
+  .top{height:auto;padding:18px 0;align-items:flex-start}
+  .nav{gap:12px;font-size:12px;flex-wrap:wrap;justify-content:flex-end}
+  .hero{grid-template-columns:1fr;padding:42px 0 54px}
+  .mockArea{grid-template-columns:1fr;max-width:390px;margin:auto}
+  .sideCards{grid-template-columns:1fr}
+  .featureGrid,.howGrid,.banner{grid-template-columns:1fr}
+  .menuGrid{grid-template-columns:repeat(2,1fr)}
+  .menuGrid .menuCard:last-child{grid-column:span 2}
+  .feature{border-right:0;border-bottom:1px solid var(--line);padding:26px 12px}
+  .feature:last-child{border-bottom:0}
+  .banner{padding:26px;grid-template-columns:1fr}
+  .moonBadge{display:none}
+  .foot{display:block}
+  .links{margin-bottom:12px}
+  .brandText{font-size:20px}
+  .nav a:not(.cta){display:none}
+}
+</style>
+</head>
+<body>
+
+<header class="top wrap">
+  <a class="brand" href="index.html" aria-label="MinitCare トップ">
+    <span class="mark">M</span>
+    <span class="brandText">MinitCare</span>
+  </a>
+  <nav class="nav">
+    <a href="#features">特徴</a>
+    <a href="#menus">メニュー</a>
+    <a href="#how">使い方</a>
+    <a class="cta" href="app.html">試してみる</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero wrap">
+    <div>
+      <div class="kicker">MinitCare — Minit Series</div>
+      <h1>頭がオフに<br>ならない夜に。</h1>
+      <p class="lead">手だけでできる、頭皮・顔・首のセルフマッサージガイド。</p>
+      <p class="desc">
+        作業終わりに頭が切れない。ぐるぐる考えが止まらない。<br>
+        MinitCareは「ケアの手順」を自動で進めて、指を動かすだけの状態にします。
+      </p>
+      <ul class="checks">
+        <li>道具・器具なし。手だけでできる</li>
+        <li>5分〜8分のコースを選ぶだけ</li>
+        <li>夜に使いやすい、低刺激ダークUI</li>
+      </ul>
+      <div class="heroButtons">
+        <a class="cta" href="app.html">試してみる</a>
+        <a class="cta secondary" href="#menus">メニューを見る</a>
+      </div>
+      <div class="subnote">インストール不要。ブラウザでそのまま使えます。</div>
+    </div>
+
+    <div class="mockArea" aria-label="MinitCareのアプリ画面イメージ">
+      <div class="phone">
+        <div class="screen">
+          <div class="mock-status"><span>23:14</span><span>MinitCare</span></div>
+          <div class="mock-topbar">
+            <div>
+              <div style="color:#9990b8;font-size:10px;">4 / 10</div>
+              <div style="font-size:13px;font-weight:850;">頭皮ほぐし</div>
+            </div>
+            <div class="mock-time-wrap">
+              <div class="mock-remain">残り時間</div>
+              <div class="mock-time">03:30</div>
+            </div>
+          </div>
+          <div class="mock-progress-thin"><div></div></div>
+          <div style="text-align:center;color:#9990b8;font-size:10px;">30秒カウント</div>
+          <div style="text-align:center;font-size:32px;font-weight:950;color:#c4b5fd;line-height:1;">00:18</div>
+          <div style="height:6px;border-radius:999px;background:rgba(255,255,255,.12);overflow:hidden;width:160px;margin:0 auto;">
+            <div style="height:100%;width:40%;background:var(--accent);border-radius:inherit;"></div>
+          </div>
+          <div class="mock-picto">
+            <svg viewBox="0 0 240 240" stroke-width="9" aria-hidden="true">
+              <circle cx="120" cy="60" r="24"/>
+              <path d="M72 54 Q84 36 96 48 Q100 60 90 72"/>
+              <path d="M168 54 Q156 36 144 48 Q140 60 150 72"/>
+              <path d="M120 86 L120 150"/>
+              <path d="M90 116 Q120 98 150 116"/>
+              <path d="M120 150 L94 207"/>
+              <path d="M120 150 L146 207"/>
+              <path class="accent-stroke" stroke-width="6" d="M96 48 Q104 38 112 46"/>
+              <path class="accent-stroke" stroke-width="6" d="M144 48 Q136 38 128 46"/>
+            </svg>
+          </div>
+          <div class="mock-move">頭頂部をほぐす</div>
+          <div class="mock-guide">両手で頭頂部を包むように押します。</div>
+          <div class="mock-steps">
+            <div class="mock-step-block done"></div>
+            <div class="mock-step-block done"></div>
+            <div class="mock-step-block done"></div>
+            <div class="mock-step-block cur"></div>
+            <div class="mock-step-block"></div>
+            <div class="mock-step-block"></div>
+            <div class="mock-step-block"></div>
+            <div class="mock-step-block"></div>
+            <div class="mock-step-block"></div>
+            <div class="mock-step-block"></div>
+          </div>
+          <div class="mock-next">次：後頭部をほぐす</div>
+          <div class="mock-controls">
+            <div class="mock-btn">一時停止</div>
+            <div class="mock-btn" style="border-color:rgba(255,107,107,.3);color:#ff9999;">終了</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sideCards">
+        <div class="miniCard">
+          <b>指を動かすだけ</b>
+          <p>大きなガイドに沿って手を動かすだけ。考える必要はありません。</p>
+        </div>
+        <div class="miniCard">
+          <b>今日はここまででOK</b>
+          <p>継続圧や達成率で追い込まず、小さく終われる完了画面に。</p>
+        </div>
+        <div class="adDemo">広告スペース<br>完了画面・開始前のみ</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" class="section wrap">
+    <h2 class="sectionTitle">夜に使えるように</h2>
+    <div class="featureGrid">
+      <div class="feature">
+        <div class="icon">🖐</div>
+        <h3>道具なし</h3>
+        <p>かっさ・ローラー不要。手の指だけでできるケアだけ選んでいます。</p>
+      </div>
+      <div class="feature">
+        <div class="icon">🌙</div>
+        <h3>低刺激UI</h3>
+        <p>深夜でも目に優しい暗めの配色。派手な演出は入れません。</p>
+      </div>
+      <div class="feature">
+        <div class="icon">⏱</div>
+        <h3>3〜8分</h3>
+        <p>短いコースから選べます。「5分だけ」でも十分なケアができます。</p>
+      </div>
+      <div class="feature">
+        <div class="icon">✓</div>
+        <h3>終わる許可</h3>
+        <p>「今日はここまででOK」で終わる設計。頑張らせません。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="menus" class="section wrap">
+    <h2 class="sectionTitle">今夜どこをほぐす？</h2>
+    <div class="menuGrid">
+      <div class="menuCard">
+        <div class="mIcon">👐</div>
+        <h4>頭皮ほぐし</h4>
+        <p>指で頭皮を直接ほぐす基本コース</p>
+        <span class="mDur">5分 / 10ステップ</span>
+      </div>
+      <div class="menuCard">
+        <div class="mIcon">😮</div>
+        <h4>フェイスライン</h4>
+        <p>顔まわりのこわばりをゆるめる</p>
+        <span class="mDur">3分 / 6ステップ</span>
+      </div>
+      <div class="menuCard">
+        <div class="mIcon">✨</div>
+        <h4>頭皮＋顔</h4>
+        <p>頭皮から顔まわりまでまとめて</p>
+        <span class="mDur">8分 / 16ステップ</span>
+      </div>
+      <div class="menuCard">
+        <div class="mIcon">🌿</div>
+        <h4>頭皮＋首</h4>
+        <p>頭皮ほぐしから首・肩のリセットまで</p>
+        <span class="mDur">7分 / 14ステップ</span>
+      </div>
+      <div class="menuCard">
+        <div class="mIcon">🌙</div>
+        <h4>寝る前ルーティン</h4>
+        <p>頭皮→顔→首の組み合わせコース</p>
+        <span class="mDur">7.5分 / 15ステップ</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="how" class="section wrap">
+    <h2 class="sectionTitle">使い方は3つだけ</h2>
+    <div class="howGrid">
+      <div class="howItem">
+        <h3><span class="num">1</span>コースを選ぶ</h3>
+        <p>今夜ほぐしたい部位に合わせて選びます。短い3分コースからでOK。</p>
+      </div>
+      <div class="howItem">
+        <h3><span class="num">2</span>ガイドに合わせて動かす</h3>
+        <p>大きな図解に合わせて指を動かすだけ。自動で次のステップへ進みます。</p>
+      </div>
+      <div class="howItem">
+        <h3><span class="num">3</span>終わったら閉じる</h3>
+        <p>完了したら✦を受け取って閉じるだけ。記録も連続日数も追いかけません。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="safety" class="section wrap">
+    <h2 class="sectionTitle">安心して使うために</h2>
+    <div class="howGrid">
+      <div class="howItem">
+        <h3>医療目的ではありません</h3>
+        <p>本アプリはリラクゼーションを目的としたセルフケアガイドです。効果を保証するものではありません。</p>
+      </div>
+      <div class="howItem">
+        <h3>ツボ押しは含まない</h3>
+        <p>誤った圧迫による不調を避けるため、ツボ押しのコンテンツは意図的に除外しています。</p>
+      </div>
+      <div class="howItem">
+        <h3>痛みがあれば止める</h3>
+        <p>違和感や痛みを感じた場合はすぐに中止してください。無理のない範囲で行いましょう。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="banner wrap">
+    <div class="moonBadge">🌙</div>
+    <div>
+      <h2>自分を否定する前に、まず開こう。</h2>
+      <p>頭をほぐすだけで、少し軽くなることがあります。</p>
+    </div>
+    <div>
+      <a class="cta" href="app.html">試してみる</a>
+      <div class="subnote" style="text-align:center;">タイマー中に広告は表示しません</div>
+    </div>
+  </section>
+
+  <section class="adWrap wrap" aria-label="広告エリア">
+    <div class="adSpace">
+      AdSense広告スペース予定<br>
+      ※トップ・説明・完了画面のみ。タイマー中は非表示。
+    </div>
+  </section>
+</main>
+
+<footer class="foot wrap">
+  <div class="links">
+    <a href="https://mimilyappdev.github.io/" target="_blank" rel="noopener">Mimilyappdev</a>
+    <a href="https://mimilyappdev.github.io/legal/privacy.html" target="_blank" rel="noopener">プライバシーポリシー</a>
+    <a href="https://mimilyappdev.github.io/legal/terms.html" target="_blank" rel="noopener">利用規約</a>
+    <a href="https://forms.gle/JmaTubGR56G9V8S89" target="_blank" rel="noopener">お問い合わせ</a>
+  </div>
+  <div>© 2026 MinitCare / Mimilyappdev</div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,1472 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0d0b14" />
+  <title>MinitCare</title>
+  <style>
+    :root {
+      --bg: #0d0b14;
+      --card: #1a1525;
+      --card2: #221d30;
+      --line: rgba(255,255,255,.14);
+      --text: #f7f5ff;
+      --sub: #bbb5cc;
+      --muted: #7f7a95;
+      --accent: #c4b5fd;
+      --accent2: #ddd6fe;
+      --accent-dim: rgba(196,181,253,.13);
+      --shadow: rgba(0,0,0,.50);
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top, rgba(196,181,253,.09), transparent 36%),
+        linear-gradient(180deg, #1a1525 0%, #110f1a 48%, #07060c 100%);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Segoe UI", sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 14px;
+    }
+
+    button { font-family: inherit; }
+
+    .app {
+      width: 100%;
+      max-width: 430px;
+      min-height: 88vh;
+      background: linear-gradient(180deg, #1a1525 0%, #0d0b14 100%);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 30px;
+      box-shadow: 0 22px 46px var(--shadow);
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .screen {
+      display: none;
+      flex: 1;
+      flex-direction: column;
+      animation: fade .22s ease;
+    }
+    .screen.active { display: flex; }
+
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 40px;
+      margin-bottom: 14px;
+    }
+
+    .brand {
+      color: var(--sub);
+      font-size: 13px;
+      letter-spacing: .06em;
+    }
+
+    .icon-button {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      font-size: 20px;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+    }
+
+    h1 {
+      font-size: 34px;
+      line-height: 1.18;
+      margin: 0;
+      font-weight: 900;
+      letter-spacing: -.04em;
+    }
+
+    h2 {
+      font-size: 24px;
+      margin: 0 0 18px;
+      font-weight: 850;
+      text-align: center;
+    }
+
+    .lead {
+      color: var(--sub);
+      line-height: 1.75;
+      margin-top: 12px;
+      font-size: 15px;
+    }
+
+    .hero {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 22px;
+    }
+
+    .hero-figure {
+      width: 170px;
+      height: 170px;
+      margin: 0 auto 6px;
+      display: grid;
+      place-items: center;
+    }
+
+    .hero-figure svg {
+      width: 170px;
+      height: 170px;
+      stroke: var(--text);
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      filter: drop-shadow(0 8px 14px rgba(0,0,0,.45));
+    }
+
+    .hero-figure .hero-hands {
+      animation: gentleFloat 3s ease-in-out infinite;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+
+    .hero-figure .hero-glow {
+      animation: glowPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes gentleFloat {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-5px); }
+    }
+
+    @keyframes glowPulse {
+      0%,100% { opacity: .4; }
+      50%      { opacity: .85; }
+    }
+
+    .button {
+      border: none;
+      border-radius: 999px;
+      background: linear-gradient(180deg, var(--accent2), var(--accent));
+      color: #1a0f35;
+      font-size: 17px;
+      font-weight: 900;
+      padding: 17px 18px;
+      cursor: pointer;
+      box-shadow: 0 10px 20px rgba(167,139,250,.22);
+    }
+
+    .sub-button {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255,255,255,.045);
+      color: var(--text);
+      padding: 14px;
+      font-size: 15px;
+      font-weight: 750;
+      cursor: pointer;
+    }
+
+    .danger-button {
+      color: #fff;
+      border-color: rgba(255,107,107,.38);
+      background: rgba(255,107,107,.14);
+    }
+
+    .footer-note {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.65;
+      text-align: center;
+    }
+
+    .ad-space {
+      border: 1px dashed rgba(255,255,255,.20);
+      background: rgba(255,255,255,.035);
+      border-radius: 16px;
+      padding: 12px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      min-height: 58px;
+      display: grid;
+      place-items: center;
+      margin: 14px 0;
+    }
+
+    /* ── Menu list ── */
+    .menu-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .menu-item {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      border-radius: 16px;
+      padding: 12px 14px;
+      display: grid;
+      grid-template-columns: 50px 1fr 18px;
+      align-items: center;
+      gap: 12px;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .menu-title { font-size: 16px; font-weight: 850; }
+    .menu-desc  { color: var(--sub); font-size: 12px; margin-top: 2px; }
+
+    .mini-icon {
+      width: 50px;
+      height: 50px;
+      display: grid;
+      place-items: center;
+    }
+
+    .mini-icon svg {
+      width: 50px;
+      height: 50px;
+      stroke: var(--text);
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 5;
+    }
+
+    .mini-icon .accent-stroke { stroke: var(--accent); }
+
+    .menu-footer {
+      color: var(--sub);
+      text-align: center;
+      font-size: 13px;
+      margin-top: 16px;
+    }
+
+    /* ── Timer screen ── */
+    .timer-top {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 14px;
+      align-items: start;
+      margin-bottom: 14px;
+    }
+
+    .time-wrap { text-align: right; }
+    .remain-label { color: var(--sub); font-size: 13px; }
+    .time { font-size: 22px; font-weight: 900; letter-spacing: .03em; margin-top: 2px; color: var(--sub); }
+
+    .current-time-wrap {
+      text-align: center;
+      margin: 4px 0 14px;
+    }
+
+    .current-label { color: var(--sub); font-size: 13px; margin-bottom: 4px; }
+
+    .current-time {
+      font-size: 64px;
+      line-height: 1;
+      font-weight: 950;
+      letter-spacing: .02em;
+      color: var(--accent);
+    }
+
+    .step-progress {
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.14);
+      overflow: hidden;
+      width: min(100%, 240px);
+      margin: 10px auto 0;
+    }
+
+    .step-progress > div {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: inherit;
+      transition: width .25s linear;
+    }
+
+    .top-progress {
+      height: 5px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.14);
+      overflow: hidden;
+      margin-bottom: 18px;
+    }
+
+    .top-progress > div {
+      height: 100%;
+      width: 0%;
+      background: var(--accent);
+      border-radius: inherit;
+      transition: width .25s linear;
+    }
+
+    /* ── Pictogram ── */
+    .pictogram {
+      width: 100%;
+      height: 230px;
+      border-radius: 26px;
+      background: radial-gradient(circle at center, rgba(196,181,253,.09), rgba(196,181,253,.03) 52%, rgba(255,255,255,.01));
+      border: 1px solid rgba(196,181,253,.12);
+      display: grid;
+      place-items: center;
+      margin-bottom: 14px;
+      overflow: hidden;
+    }
+
+    .pictogram svg {
+      width: 84%;
+      height: 84%;
+      stroke: #ede8ff;
+      stroke-width: 7;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      filter: drop-shadow(0 6px 12px rgba(0,0,0,.4));
+    }
+
+    .pictogram .accent-stroke { stroke: var(--accent); }
+
+    /* ── Pictogram animations ── */
+    .anim-scalp .anim-hands {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: scalpRub 2.4s ease-in-out infinite;
+    }
+    @keyframes scalpRub {
+      0%,100% { transform: translateY(0) rotate(-2deg); }
+      50%      { transform: translateY(-5px) rotate(2deg); }
+    }
+
+    .anim-breathe .breath-ring {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: breatheExpand 4s ease-in-out infinite;
+    }
+    @keyframes breatheExpand {
+      0%,100% { transform: scale(.9); opacity: .45; }
+      50%      { transform: scale(1.08); opacity: 1; }
+    }
+
+    .anim-face .anim-fingers {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: fingerPress 2.2s ease-in-out infinite;
+    }
+    @keyframes fingerPress {
+      0%,100% { transform: translateX(0); }
+      50%      { transform: translateX(4px); }
+    }
+
+    .anim-neck .neck-head {
+      transform-box: fill-box;
+      transform-origin: bottom center;
+      animation: neckTilt 2.6s ease-in-out infinite;
+    }
+    @keyframes neckTilt {
+      0%,100% { transform: rotate(0deg); }
+      50%      { transform: rotate(8deg); }
+    }
+
+    .anim-shoulder .accent-stroke {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: shoulderSpin 2.6s linear infinite;
+    }
+    @keyframes shoulderSpin {
+      to { transform: rotate(360deg); }
+    }
+
+    .stretch-name {
+      font-size: 24px;
+      font-weight: 900;
+      margin-bottom: 6px;
+      text-align: center;
+    }
+
+    .stretch-guide {
+      color: var(--sub);
+      text-align: center;
+      line-height: 1.65;
+      min-height: 44px;
+      padding: 0 10px;
+      font-size: 14px;
+    }
+
+    .step-blocks {
+      display: flex;
+      gap: 5px;
+      justify-content: center;
+      margin: 12px auto;
+      width: min(100%, 260px);
+      flex-wrap: wrap;
+    }
+
+    .step-block {
+      height: 7px;
+      flex: 1;
+      min-width: 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.14);
+    }
+
+    .step-block.done, .step-block.current {
+      background: var(--accent);
+    }
+
+    .next {
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: 16px;
+      padding: 10px 14px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 13px;
+    }
+
+    .controls {
+      margin-top: auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .step-count   { color: var(--sub); font-size: 13px; margin-bottom: 6px; }
+    .routine-name { font-size: 18px; font-weight: 850; }
+
+    /* ── Inline ad ── */
+    .inline-ad { display: none; margin: 0 0 12px; }
+    .inline-ad.show { display: grid; }
+
+    /* ── Countdown ── */
+    .countdown-wrap {
+      flex: 1;
+      display: grid;
+      place-items: center;
+      text-align: center;
+    }
+
+    .countdown-menu { font-size: 22px; font-weight: 900; margin-bottom: 26px; color: var(--sub); }
+
+    .countdown-num {
+      width: 150px;
+      height: 150px;
+      margin: 0 auto;
+      border: 8px solid rgba(196,181,253,.22);
+      border-right-color: var(--accent);
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      font-size: 60px;
+      font-weight: 950;
+      color: var(--accent);
+    }
+
+    .countdown-text { color: var(--sub); margin-top: 22px; }
+
+    /* ── Pause ── */
+    .pause-menu {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      gap: 14px;
+      text-align: center;
+    }
+
+    .pause-title { font-size: 26px; font-weight: 900; margin-bottom: 18px; }
+
+    /* ── Complete ── */
+    .complete-wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .complete-figure {
+      width: 140px;
+      height: 140px;
+      margin: 0 auto 14px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--accent-dim);
+      border: 2px solid rgba(196,181,253,.25);
+      font-size: 52px;
+    }
+
+    .complete-title { font-size: 28px; font-weight: 950; margin-bottom: 10px; }
+
+    .complete-text {
+      color: var(--sub);
+      line-height: 1.85;
+      font-size: 15px;
+    }
+
+    .reward-box {
+      border: 1px solid rgba(196,181,253,.28);
+      background: rgba(196,181,253,.07);
+      border-radius: 18px;
+      padding: 14px;
+      margin: 14px 0;
+      text-align: center;
+    }
+
+    .star-count { font-size: 16px; font-weight: 900; margin-top: 10px; color: var(--accent2); }
+    .reward-message { color: var(--sub); font-size: 13px; min-height: 20px; margin-top: 8px; }
+
+    /* ── Settings ── */
+    .setting-list { display: grid; gap: 14px; margin-top: 18px; }
+
+    .setting-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.045);
+      border-radius: 18px;
+      padding: 14px;
+    }
+
+    .setting-title { font-size: 16px; font-weight: 850; }
+    .setting-desc  { color: var(--sub); font-size: 12px; margin-top: 4px; line-height: 1.5; }
+
+    .switch {
+      width: 54px;
+      height: 30px;
+      border-radius: 999px;
+      border: 0;
+      background: rgba(255,255,255,.20);
+      position: relative;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .switch::after {
+      content: "";
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #fff;
+      position: absolute;
+      left: 3px;
+      top: 3px;
+      transition: transform .2s ease;
+    }
+
+    .switch.on { background: var(--accent); }
+    .switch.on::after { transform: translateX(24px); }
+
+    .language-buttons { display: flex; gap: 8px; }
+
+    .lang-button {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.05);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-weight: 850;
+      cursor: pointer;
+    }
+
+    .lang-button.active {
+      background: var(--accent);
+      color: #1a0f35;
+      border-color: transparent;
+    }
+
+    @media (max-width: 380px) {
+      body { padding: 8px; }
+      .app { min-height: 94vh; padding: 16px; border-radius: 24px; }
+      h1 { font-size: 30px; }
+      .pictogram { height: 200px; }
+      .stretch-name { font-size: 21px; }
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- Home -->
+  <section id="homeScreen" class="screen active">
+    <div class="topbar">
+      <div class="brand">MinitCare</div>
+      <button class="icon-button" id="homeSettingsBtn" aria-label="設定">⚙</button>
+    </div>
+    <div class="hero">
+      <div class="hero-figure" id="homeIcon"></div>
+      <div>
+        <h1>MinitCare</h1>
+        <div class="lead" data-i18n-html="lead">自分を否定する前に、<br />まずMinitCareを開こう。</div>
+      </div>
+    </div>
+    <button class="button" id="goMenuBtn" data-i18n="start">はじめる</button>
+    <div class="footer-note" data-i18n="medNote">医療行為・治療目的ではありません。痛みがある時は中止してください。</div>
+  </section>
+
+  <!-- Menu -->
+  <section id="menuScreen" class="screen">
+    <div class="topbar">
+      <button class="icon-button" id="menuBackBtn" aria-label="戻る">←</button>
+      <div class="brand">MinitCare</div>
+      <button class="icon-button" id="menuSettingsBtn" aria-label="設定">⚙</button>
+    </div>
+    <h2 data-i18n="menuHeading">今夜どこをほぐす？</h2>
+    <div class="menu-list" id="menuList"></div>
+    <div class="menu-footer" data-i18n="menuFooter">メニュー選択後、開始前に広告が入ります</div>
+  </section>
+
+  <!-- Pre-ad -->
+  <section id="preAdScreen" class="screen">
+    <div class="topbar">
+      <button class="icon-button" id="preAdBackBtn" aria-label="戻る">←</button>
+      <div class="brand">開始前</div>
+      <div></div>
+    </div>
+    <div class="hero">
+      <h2 id="preAdTitle"></h2>
+      <div class="ad-space">広告スペース<br />AdSenseコードをここに配置</div>
+      <button class="button" id="startBtn" data-i18n="startCare">ケアをはじめる</button>
+      <div class="footer-note" data-i18n="prepareNote">深呼吸しながら、姿勢を整えてください。</div>
+    </div>
+  </section>
+
+  <!-- Countdown -->
+  <section id="countdownScreen" class="screen">
+    <div class="countdown-wrap">
+      <div>
+        <div class="countdown-menu" id="countdownMenuName"></div>
+        <div class="countdown-num" id="countdownNum">3</div>
+        <div class="countdown-text" data-i18n="prepare">準備してください</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Timer -->
+  <section id="timerScreen" class="screen">
+    <div class="timer-top">
+      <div>
+        <div class="step-count" id="stepCount">1 / 10</div>
+        <div class="routine-name" id="routineName"></div>
+      </div>
+      <div class="time-wrap">
+        <div class="remain-label" data-i18n="remaining">残り時間</div>
+        <div class="time" id="timeText">05:00</div>
+      </div>
+    </div>
+
+    <div class="top-progress"><div id="totalProgress"></div></div>
+
+    <div class="current-time-wrap">
+      <div class="current-label" data-i18n="currentCount">30秒カウント</div>
+      <div class="current-time" id="currentTimeText">00:30</div>
+      <div class="step-progress"><div id="stepProgress"></div></div>
+    </div>
+
+    <div class="inline-ad ad-space" id="inlineAd">広告スペース</div>
+
+    <div class="pictogram" id="pictogram"></div>
+    <div class="stretch-name" id="stretchName"></div>
+    <div class="stretch-guide" id="stretchGuide"></div>
+    <div class="step-blocks" id="stepBlocks"></div>
+    <div class="next" id="nextMove"></div>
+
+    <div class="controls">
+      <button class="sub-button" id="pauseBtn" data-i18n="pause">一時停止</button>
+      <button class="sub-button danger-button" id="stopBtn" data-i18n="end">終了</button>
+    </div>
+  </section>
+
+  <!-- Pause -->
+  <section id="pauseScreen" class="screen">
+    <div class="pause-menu">
+      <div class="pause-title" data-i18n="pause">一時停止</div>
+      <button class="button" id="resumeBtn" data-i18n="resume">▶ 再開</button>
+      <button class="sub-button" id="restartBtn" data-i18n="restart">最初から</button>
+      <button class="sub-button danger-button" id="pauseEndBtn" data-i18n="end">終了</button>
+    </div>
+  </section>
+
+  <!-- Complete -->
+  <section id="completeScreen" class="screen">
+    <div class="topbar">
+      <div class="brand">MinitCare</div>
+      <button class="icon-button" id="completeSettingsBtn" aria-label="設定">⚙</button>
+    </div>
+    <div class="complete-wrap">
+      <div class="complete-figure">🌙</div>
+      <div class="complete-title" data-i18n="completeTitle">おつかれさま。</div>
+      <div class="complete-text" id="completeText" data-i18n-html="completeText">頭がちょっと軽くなったかも。<br />今日はここまででOK。</div>
+      <div class="ad-space">広告スペース<br />AdSenseコードをここに配置</div>
+      <div class="reward-box">
+        <button class="button" id="claimStarBtn" data-i18n="claimStar">✦ を受け取る</button>
+        <div class="reward-message" id="rewardMessage"></div>
+        <div class="star-count" id="starCount">現在：✦ 0</div>
+      </div>
+      <button class="button" id="homeBtn" data-i18n="homeBack">ホームへ戻る</button>
+    </div>
+  </section>
+
+  <!-- Settings -->
+  <section id="settingsScreen" class="screen">
+    <div class="topbar">
+      <button class="icon-button" id="settingsBackBtn" aria-label="戻る">←</button>
+      <div class="brand">設定</div>
+      <div></div>
+    </div>
+    <h2 data-i18n="settings">設定</h2>
+    <div class="setting-list">
+      <div class="setting-row">
+        <div>
+          <div class="setting-title" data-i18n="soundSetting">音</div>
+          <div class="setting-desc"  data-i18n="soundDesc">ステップ切り替えに小さくポーン</div>
+        </div>
+        <button class="switch on" id="soundSwitch" aria-label="音ON/OFF"></button>
+      </div>
+      <div class="setting-row">
+        <div>
+          <div class="setting-title" data-i18n="voiceSetting">ガイド音声</div>
+          <div class="setting-desc"  data-i18n="voiceDesc">動作名と短い案内を読み上げます</div>
+        </div>
+        <button class="switch" id="voiceSwitch" aria-label="ガイド音声ON/OFF"></button>
+      </div>
+      <div class="setting-row">
+        <div>
+          <div class="setting-title" data-i18n="vibeSetting">バイブ</div>
+          <div class="setting-desc"  data-i18n="vibeDesc">対応端末のみ短く振動</div>
+        </div>
+        <button class="switch on" id="vibeSwitch" aria-label="バイブON/OFF"></button>
+      </div>
+      <div class="setting-row">
+        <div>
+          <div class="setting-title" data-i18n="langSetting">言語</div>
+          <div class="setting-desc"  data-i18n="langDesc">表示言語を切り替えます</div>
+        </div>
+        <div class="language-buttons">
+          <button class="lang-button" id="langJaBtn" type="button">JP</button>
+          <button class="lang-button" id="langEnBtn" type="button">EN</button>
+        </div>
+      </div>
+    </div>
+    <div class="footer-note">version 0.1.0</div>
+  </section>
+
+</div>
+<script>
+// ── i18n ──────────────────────────────────────────────────────────────
+const I18N = {
+  ja: {
+    appTitle: '頭のマッサージ',
+    lead: '自分を否定する前に、<br />まずMinitCareを開こう。',
+    start: 'はじめる',
+    medNote: '医療行為・治療目的ではありません。痛みがある時は中止してください。',
+    menuHeading: '今夜どこをほぐす？',
+    menuFooter: 'メニュー選択後、開始前に広告が入ります',
+    startCare: 'ケアをはじめる',
+    prepare: '準備してください',
+    prepareNote: '深呼吸しながら、姿勢を整えてください。',
+    remaining: '残り時間',
+    currentCount: '30秒カウント',
+    pause: '一時停止',
+    resume: '▶ 再開',
+    restart: '最初から',
+    end: '終了',
+    completeTitle: 'おつかれさま。',
+    completeText: '頭がちょっと軽くなったかも。<br />今日はここまででOK。',
+    claimStar: '✦ を受け取る',
+    claimedStar: '✦ を1つ受け取りました',
+    alreadyClaimed: '受け取り済みです',
+    starNow: '現在：✦ {count}',
+    homeBack: 'ホームへ戻る',
+    settings: '設定',
+    soundSetting: '音',
+    soundDesc: 'ステップ切り替えに小さくポーン',
+    voiceSetting: 'ガイド音声',
+    voiceDesc: '動作名と短い案内を読み上げます',
+    vibeSetting: 'バイブ',
+    vibeDesc: '対応端末のみ短く振動',
+    langSetting: '言語',
+    langDesc: '表示言語を切り替えます',
+    next: '次：{name}',
+    last: '最後です',
+    preAdStart: '{name} を始めます',
+  },
+  en: {
+    appTitle: 'Head Massage',
+    lead: 'Before you doubt yourself,<br />just open MinitCare.',
+    start: 'Start',
+    medNote: 'This is not medical treatment. Stop if you feel pain.',
+    menuHeading: 'What would you like to ease tonight?',
+    menuFooter: 'An ad appears before the routine starts.',
+    startCare: 'Start care',
+    prepare: 'Get ready',
+    prepareNote: 'Take a deep breath and settle your posture.',
+    remaining: 'Time left',
+    currentCount: '30-sec count',
+    pause: 'Pause',
+    resume: '▶ Resume',
+    restart: 'Restart',
+    end: 'End',
+    completeTitle: 'Good job.',
+    completeText: 'Your head might feel a little lighter.<br />That is enough for today.',
+    claimStar: 'Receive ✦',
+    claimedStar: 'You received 1 ✦',
+    alreadyClaimed: 'Already received',
+    starNow: 'Now: ✦ {count}',
+    homeBack: 'Back home',
+    settings: 'Settings',
+    soundSetting: 'Sound',
+    soundDesc: 'A soft beep between steps',
+    voiceSetting: 'Voice guide',
+    voiceDesc: 'Reads the move and short guide aloud',
+    vibeSetting: 'Vibration',
+    vibeDesc: 'Short vibration on supported devices',
+    langSetting: 'Language',
+    langDesc: 'Switch display language',
+    next: 'Next: {name}',
+    last: 'Last move',
+    preAdStart: 'Starting {name}',
+  }
+};
+
+// ── SVG Icons ─────────────────────────────────────────────────────────
+const ICONS = {
+  home: `<svg viewBox="0 0 240 240" stroke-width="8">
+    <circle cx="120" cy="52" r="22"/>
+    <path d="M120 76 L120 148"/>
+    <path d="M90 106 Q120 88 150 106"/>
+    <g class="hero-hands">
+      <path d="M72 76 Q84 68 92 80 Q96 92 88 100"/>
+      <path d="M168 76 Q156 68 148 80 Q144 92 152 100"/>
+    </g>
+    <path d="M120 148 L94 206"/>
+    <path d="M120 148 L146 206"/>
+    <path class="accent-stroke hero-glow" stroke-width="5" d="M96 58 Q88 42 100 36"/>
+    <path class="accent-stroke hero-glow" stroke-width="5" d="M144 58 Q152 42 140 36"/>
+  </svg>`,
+
+  scalp: `<svg viewBox="0 0 240 240" stroke-width="7">
+    <circle cx="120" cy="58" r="24"/>
+    <path d="M120 84 L120 152"/>
+    <path d="M90 115 Q120 96 150 115"/>
+    <g class="anim-hands">
+      <path d="M70 62 Q82 44 94 56"/>
+      <path d="M170 62 Q158 44 146 56"/>
+      <path class="accent-stroke" stroke-width="5" d="M78 52 Q86 36 100 44"/>
+      <path class="accent-stroke" stroke-width="5" d="M162 52 Q154 36 140 44"/>
+    </g>
+    <path d="M120 152 L94 207"/>
+    <path d="M120 152 L146 207"/>
+  </svg>`,
+
+  face: `<svg viewBox="0 0 240 240" stroke-width="7">
+    <circle cx="120" cy="78" r="46"/>
+    <g class="anim-fingers">
+      <path class="accent-stroke" stroke-width="5" d="M78 66 Q84 58 94 64"/>
+      <path class="accent-stroke" stroke-width="5" d="M162 66 Q156 58 146 64"/>
+      <path class="accent-stroke" stroke-width="5" d="M72 84 Q66 76 72 70"/>
+      <path class="accent-stroke" stroke-width="5" d="M168 84 Q174 76 168 70"/>
+    </g>
+    <path d="M110 98 Q120 107 130 98"/>
+    <path d="M96 156 L96 184 L180 184"/>
+    <path d="M144 156 L144 184"/>
+  </svg>`,
+
+  breathe: `<svg viewBox="0 0 240 240" stroke-width="7">
+    <circle class="breath-ring accent-stroke" cx="120" cy="108" r="52" stroke-width="5"/>
+    <circle cx="120" cy="58" r="22"/>
+    <path d="M120 82 L120 152"/>
+    <path d="M90 114 Q120 96 150 114"/>
+    <path d="M120 152 L94 207"/>
+    <path d="M120 152 L146 207"/>
+  </svg>`,
+
+  routine: `<svg viewBox="0 0 240 240" stroke-width="7">
+    <circle cx="120" cy="52" r="22"/>
+    <path d="M120 76 L120 148"/>
+    <path d="M90 110 Q120 92 150 110"/>
+    <path d="M120 148 L94 206"/>
+    <path d="M120 148 L146 206"/>
+    <path class="accent-stroke" stroke-width="5" d="M84 60 Q72 42 84 30"/>
+    <path class="accent-stroke" stroke-width="5" d="M156 60 Q168 42 156 30"/>
+    <path class="accent-stroke" stroke-width="5" d="M64 90 Q48 78 54 64"/>
+    <path class="accent-stroke" stroke-width="5" d="M176 90 Q192 78 186 64"/>
+  </svg>`,
+
+  scalpFull: `<svg viewBox="0 0 240 240" stroke-width="7">
+    <circle cx="120" cy="60" r="24"/>
+    <g class="anim-hands">
+      <path d="M72 54 Q84 36 96 48 Q100 60 90 72"/>
+      <path d="M168 54 Q156 36 144 48 Q140 60 150 72"/>
+    </g>
+    <path d="M120 86 L120 150"/>
+    <path d="M90 116 Q120 98 150 116"/>
+    <path d="M120 150 L94 207"/>
+    <path d="M120 150 L146 207"/>
+    <path class="accent-stroke" stroke-width="5" d="M96 48 Q104 38 112 46"/>
+    <path class="accent-stroke" stroke-width="5" d="M144 48 Q136 38 128 46"/>
+  </svg>`,
+
+  temple: `<svg viewBox="0 0 240 240" stroke-width="7">
+    <circle cx="120" cy="68" r="24"/>
+    <g class="anim-fingers">
+      <circle cx="78" cy="64" r="8"/>
+      <circle cx="162" cy="64" r="8"/>
+    </g>
+    <path class="accent-stroke" stroke-width="5" d="M70 64 Q62 54 68 44"/>
+    <path class="accent-stroke" stroke-width="5" d="M170 64 Q178 54 172 44"/>
+    <path d="M120 94 L120 152"/>
+    <path d="M90 120 Q120 102 150 120"/>
+    <path d="M120 152 L94 207"/>
+    <path d="M120 152 L146 207"/>
+  </svg>`,
+
+  neckBack: `<svg viewBox="0 0 240 240" stroke-width="7">
+    <g class="neck-head">
+      <circle cx="120" cy="58" r="22"/>
+      <path d="M120 82 L120 108"/>
+    </g>
+    <path d="M120 108 L120 152"/>
+    <path d="M90 120 Q120 102 150 120"/>
+    <path d="M120 152 L94 207"/>
+    <path d="M120 152 L146 207"/>
+    <path class="accent-stroke" stroke-width="5" d="M152 102 Q172 116 158 134"/>
+  </svg>`,
+
+  eyeClose: `<svg viewBox="0 0 240 240" stroke-width="7">
+    <circle cx="120" cy="68" r="24"/>
+    <path class="accent-stroke" stroke-width="5" d="M100 64 Q120 72 140 64"/>
+    <path d="M88 80 Q78 64 82 50"/>
+    <path d="M152 80 Q162 64 158 50"/>
+    <path d="M120 94 L120 152"/>
+    <path d="M90 120 Q120 102 150 120"/>
+    <path d="M120 152 L94 207"/>
+    <path d="M120 152 L146 207"/>
+  </svg>`,
+
+  jaw: `<svg viewBox="0 0 240 240" stroke-width="7">
+    <circle cx="120" cy="68" r="24"/>
+    <path d="M120 94 L120 142"/>
+    <path d="M94 120 Q120 100 146 120"/>
+    <g class="anim-fingers">
+      <path class="accent-stroke" stroke-width="5" d="M84 110 Q72 120 78 132"/>
+      <path class="accent-stroke" stroke-width="5" d="M156 110 Q168 120 162 132"/>
+    </g>
+    <path d="M120 142 L94 207"/>
+    <path d="M120 142 L146 207"/>
+  </svg>`,
+
+  ear: `<svg viewBox="0 0 240 240" stroke-width="7">
+    <circle cx="120" cy="68" r="24"/>
+    <path d="M120 94 L120 152"/>
+    <path d="M90 120 Q120 102 150 120"/>
+    <g class="anim-fingers">
+      <path class="accent-stroke" stroke-width="6" d="M86 66 Q80 54 88 46 Q96 38 102 48"/>
+      <path class="accent-stroke" stroke-width="6" d="M154 66 Q160 54 152 46 Q144 38 138 48"/>
+    </g>
+    <path d="M120 152 L94 207"/>
+    <path d="M120 152 L146 207"/>
+  </svg>`,
+
+  neckTilt: `<svg viewBox="0 0 240 240" stroke-width="7">
+    <g class="neck-head">
+      <circle cx="130" cy="55" r="22"/>
+      <path d="M130 79 L120 108"/>
+    </g>
+    <path d="M120 108 L120 152"/>
+    <path d="M90 120 Q120 102 150 120"/>
+    <path d="M120 152 L94 207"/>
+    <path d="M120 152 L146 207"/>
+    <path class="accent-stroke" stroke-width="5" d="M158 50 Q178 68 160 86"/>
+  </svg>`,
+
+  shoulder: `<svg viewBox="0 0 240 240" stroke-width="7">
+    <circle cx="120" cy="54" r="22"/>
+    <path d="M120 78 L120 148"/>
+    <path d="M88 112 Q120 94 152 112"/>
+    <path d="M90 116 L78 150"/>
+    <path d="M150 116 L162 150"/>
+    <path d="M120 148 L94 207"/>
+    <path d="M120 148 L146 207"/>
+    <path class="accent-stroke" stroke-width="5" d="M72 86 Q56 110 74 130"/>
+    <path class="accent-stroke" stroke-width="5" d="M168 86 Q184 110 166 130"/>
+  </svg>`,
+};
+
+// ── Menu data ─────────────────────────────────────────────────────────
+const MENUS = {
+  scalp: {
+    ja: { label: '頭皮ほぐし',   desc: '指で頭皮を直接ほぐす 5分' },
+    en: { label: 'Scalp Massage', desc: 'Direct scalp release · 5 min' },
+    icon: ICONS.scalp,
+    stepSec: 30,
+    moves: [
+      { ja: ['ゆっくり目を閉じる',     '肩の力を抜いて、深く息を吐きます。'],       en: ['Close your eyes slowly',        'Drop your shoulders and breathe out slowly.'],        icon: ICONS.eyeClose,   anim: 'anim-breathe' },
+      { ja: ['生え際をほぐす',         '指の腹で生え際を小さく円を描きます。'],     en: ['Loosen the hairline',           'Trace small circles along the hairline with your fingertips.'], icon: ICONS.scalpFull, anim: 'anim-scalp' },
+      { ja: ['こめかみをほぐす',       '人差し指と中指でゆっくり押します。'],       en: ['Ease the temples',              'Press slowly with your index and middle fingers.'],   icon: ICONS.temple,    anim: 'anim-face' },
+      { ja: ['耳の上をほぐす',         '指の腹で上下に細かく動かします。'],         en: ['Above the ears',                'Move your fingertips gently up and down.'],           icon: ICONS.ear,       anim: 'anim-face' },
+      { ja: ['頭頂部をほぐす',         '両手で頭頂部を包むように押します。'],       en: ['Top of the head',               'Cup the top of your head and press gently.'],        icon: ICONS.scalpFull, anim: 'anim-scalp' },
+      { ja: ['後頭部をほぐす',         '後頭部に指を当てて軽く圧を加えます。'],     en: ['Back of the head',              'Place fingers on the back of your head and press.'], icon: ICONS.scalpFull, anim: 'anim-scalp' },
+      { ja: ['首の付け根をほぐす',     '後頭部の付け根に親指を当てます。'],         en: ['Base of the skull',             'Press your thumbs at the base of your skull.'],      icon: ICONS.neckBack,  anim: 'anim-neck' },
+      { ja: ['もみあげをほぐす',       '耳の前の部分をゆっくり押します。'],         en: ['In front of the ears',          'Gently press the area in front of each ear.'],       icon: ICONS.temple,    anim: 'anim-face' },
+      { ja: ['頭全体を揺らす',         '指を広げて頭全体をふんわり動かします。'],   en: ['Gently rock the whole head',    'Spread fingers and rock the head softly.'],          icon: ICONS.scalpFull, anim: 'anim-scalp' },
+      { ja: ['深呼吸でリセット',       '吸って、吐いて、頭の力を手放します。'],     en: ['Reset with a breath',           'Breathe in, breathe out, and release the tension.'], icon: ICONS.breathe,   anim: 'anim-breathe' },
+    ]
+  },
+  face: {
+    ja: { label: 'フェイスライン', desc: '顔まわりをゆるめる 3分' },
+    en: { label: 'Face Release',  desc: 'Ease the face and jaw · 3 min' },
+    icon: ICONS.face,
+    stepSec: 30,
+    moves: [
+      { ja: ['眉間をほぐす',           '親指の腹で眉頭を軽く押します。'],           en: ['Between the brows',             'Press gently between your brows with your thumb.'],  icon: ICONS.face,      anim: 'anim-face' },
+      { ja: ['眉ラインをほぐす',       '眉頭から眉尻に向かって押していきます。'],   en: ['Along the brow line',           'Glide from the inner to outer brow.'],               icon: ICONS.face,      anim: 'anim-face' },
+      { ja: ['頬骨をほぐす',           '頬骨に沿って指の腹でほぐします。'],         en: ['Along the cheekbones',          'Glide fingertips along the cheekbones.'],            icon: ICONS.jaw,       anim: 'anim-face' },
+      { ja: ['顎のラインをほぐす',     '顎先から耳の下へ優しく押します。'],         en: ['Along the jawline',             'Press gently from the chin toward the ear.'],        icon: ICONS.jaw,       anim: 'anim-face' },
+      { ja: ['耳たぶを引く',           '下・横・斜め上に優しく引っ張ります。'],     en: ['Pull the earlobes',             'Gently pull down, sideways, and diagonally up.'],    icon: ICONS.ear,       anim: 'anim-face' },
+      { ja: ['首すじを伸ばす',         'ゆっくり首を左右に傾けます。'],             en: ['Stretch the neck',              'Slowly tilt your head side to side.'],               icon: ICONS.neckBack,  anim: 'anim-neck' },
+    ]
+  },
+  scalpFace: {
+    ja: { label: '頭皮＋顔',      desc: '頭皮と顔まわりをまとめて 8分' },
+    en: { label: 'Scalp + Face',  desc: 'Head and face release · 8 min' },
+    icon: ICONS.routine,
+    stepSec: 30,
+    moves: [
+      { ja: ['ゆっくり目を閉じる',   '肩の力を抜いて、深く息を吐きます。'],       en: ['Close your eyes slowly',    'Drop your shoulders and breathe out slowly.'],       icon: ICONS.eyeClose,  anim: 'anim-breathe' },
+      { ja: ['生え際をほぐす',       '指の腹で生え際を小さく円を描きます。'],     en: ['Loosen the hairline',       'Trace small circles along the hairline.'],           icon: ICONS.scalpFull, anim: 'anim-scalp'   },
+      { ja: ['こめかみをほぐす',     '人差し指と中指でゆっくり押します。'],       en: ['Ease the temples',          'Press slowly with index and middle fingers.'],       icon: ICONS.temple,    anim: 'anim-face'    },
+      { ja: ['耳の上をほぐす',       '指の腹で上下に細かく動かします。'],         en: ['Above the ears',            'Move fingertips gently up and down.'],               icon: ICONS.ear,       anim: 'anim-face'    },
+      { ja: ['頭頂部をほぐす',       '両手で頭頂部を包むように押します。'],       en: ['Top of the head',           'Cup the top of your head and press gently.'],        icon: ICONS.scalpFull, anim: 'anim-scalp'   },
+      { ja: ['後頭部をほぐす',       '後頭部に指を当てて軽く圧を加えます。'],     en: ['Back of the head',          'Place fingers on the back and press gently.'],       icon: ICONS.scalpFull, anim: 'anim-scalp'   },
+      { ja: ['首の付け根をほぐす',   '後頭部の付け根に親指を当てます。'],         en: ['Base of the skull',         'Press your thumbs at the base of your skull.'],      icon: ICONS.neckBack,  anim: 'anim-neck'    },
+      { ja: ['もみあげをほぐす',     '耳の前の部分をゆっくり押します。'],         en: ['In front of the ears',      'Gently press the area in front of each ear.'],       icon: ICONS.temple,    anim: 'anim-face'    },
+      { ja: ['頭全体を揺らす',       '指を広げて頭全体をふんわり動かします。'],   en: ['Rock the whole head',       'Spread fingers and rock the head softly.'],          icon: ICONS.scalpFull, anim: 'anim-scalp'   },
+      { ja: ['顔の高さへ移る',       '手をゆっくり顔の高さへ下ろします。'],       en: ['Moving to the face',        'Slowly bring your hands down to face height.'],      icon: ICONS.face,      anim: 'anim-breathe' },
+      { ja: ['眉間をほぐす',         '親指の腹で眉頭を軽く押します。'],           en: ['Between the brows',         'Press gently between your brows with your thumb.'],  icon: ICONS.face,      anim: 'anim-face'    },
+      { ja: ['眉ラインをほぐす',     '眉頭から眉尻に向かって押していきます。'],   en: ['Along the brow line',       'Glide from the inner to outer brow.'],               icon: ICONS.face,      anim: 'anim-face'    },
+      { ja: ['頬骨をほぐす',         '頬骨に沿って指の腹でほぐします。'],         en: ['Along the cheekbones',      'Glide fingertips along the cheekbones.'],            icon: ICONS.jaw,       anim: 'anim-face'    },
+      { ja: ['顎のラインをほぐす',   '顎先から耳の下へ優しく押します。'],         en: ['Along the jawline',         'Press gently from the chin toward the ear.'],        icon: ICONS.jaw,       anim: 'anim-face'    },
+      { ja: ['耳たぶを引く',         '下・横・斜め上に優しく引っ張ります。'],     en: ['Pull the earlobes',         'Gently pull down, sideways, and diagonally up.'],    icon: ICONS.ear,       anim: 'anim-face'    },
+      { ja: ['首すじを伸ばす',       'ゆっくり首を左右に傾けます。'],             en: ['Stretch the neck',          'Slowly tilt your head side to side.'],               icon: ICONS.neckTilt,  anim: 'anim-neck'    },
+    ]
+  },
+  scalpNeck: {
+    ja: { label: '頭皮＋首',      desc: '頭皮と首まわりをリセット 7分' },
+    en: { label: 'Scalp + Neck',  desc: 'Head and neck reset · 7 min' },
+    icon: ICONS.neckBack,
+    stepSec: 30,
+    moves: [
+      { ja: ['ゆっくり目を閉じる',   '肩の力を抜いて、深く息を吐きます。'],       en: ['Close your eyes slowly',    'Drop your shoulders and breathe out slowly.'],       icon: ICONS.eyeClose,  anim: 'anim-breathe' },
+      { ja: ['生え際をほぐす',       '指の腹で生え際を小さく円を描きます。'],     en: ['Loosen the hairline',       'Trace small circles along the hairline.'],           icon: ICONS.scalpFull, anim: 'anim-scalp'   },
+      { ja: ['こめかみをほぐす',     '人差し指と中指でゆっくり押します。'],       en: ['Ease the temples',          'Press slowly with index and middle fingers.'],       icon: ICONS.temple,    anim: 'anim-face'    },
+      { ja: ['耳の上をほぐす',       '指の腹で上下に細かく動かします。'],         en: ['Above the ears',            'Move fingertips gently up and down.'],               icon: ICONS.ear,       anim: 'anim-face'    },
+      { ja: ['頭頂部をほぐす',       '両手で頭頂部を包むように押します。'],       en: ['Top of the head',           'Cup the top of your head and press gently.'],        icon: ICONS.scalpFull, anim: 'anim-scalp'   },
+      { ja: ['後頭部をほぐす',       '後頭部に指を当てて軽く圧を加えます。'],     en: ['Back of the head',          'Place fingers on the back and press gently.'],       icon: ICONS.scalpFull, anim: 'anim-scalp'   },
+      { ja: ['首の付け根をほぐす',   '後頭部の付け根に親指を当てます。'],         en: ['Base of the skull',         'Press your thumbs at the base of your skull.'],      icon: ICONS.neckBack,  anim: 'anim-neck'    },
+      { ja: ['もみあげをほぐす',     '耳の前の部分をゆっくり押します。'],         en: ['In front of the ears',      'Gently press the area in front of each ear.'],       icon: ICONS.temple,    anim: 'anim-face'    },
+      { ja: ['頭全体を揺らす',       '指を広げて頭全体をふんわり動かします。'],   en: ['Rock the whole head',       'Spread fingers and rock the head softly.'],          icon: ICONS.scalpFull, anim: 'anim-scalp'   },
+      { ja: ['肩の力を抜く',         '両肩をストンと落とします。'],               en: ['Release the shoulders',     'Let your shoulders drop completely.'],               icon: ICONS.shoulder,  anim: 'anim-shoulder'},
+      { ja: ['首を右にゆっくり倒す', '肩を下げたまま、ゆっくり右へ傾けます。'],   en: ['Tilt neck right',           'Keep shoulders down and tilt slowly to the right.'], icon: ICONS.neckTilt,  anim: 'anim-neck'    },
+      { ja: ['首を左にゆっくり倒す', '肩を下げたまま、ゆっくり左へ傾けます。'],   en: ['Tilt neck left',            'Keep shoulders down and tilt slowly to the left.'],  icon: ICONS.neckTilt,  anim: 'anim-neck'    },
+      { ja: ['あごをゆっくり引く',   '首の後ろを長くするイメージで。'],           en: ['Tuck your chin',            'Imagine lengthening the back of your neck.'],        icon: ICONS.neckBack,  anim: 'anim-neck'    },
+      { ja: ['肩をゆっくり回す',     '前から後ろへ、大きくゆっくり回します。'],   en: ['Shoulder rolls',            'Roll both shoulders slowly, forward and back.'],     icon: ICONS.shoulder,  anim: 'anim-shoulder'},
+    ]
+  },
+  routine: {
+    ja: { label: '寝る前ルーティン', desc: '頭皮→顔→首の組み合わせ 7分半' },
+    en: { label: 'Bedtime Routine',  desc: 'Scalp + face + neck · 7.5 min' },
+    icon: ICONS.routine,
+    stepSec: 30,
+    moves: [
+      { ja: ['ゆっくり目を閉じる',   '肩の力を抜いて、深く息を吐きます。'],       en: ['Close your eyes slowly',    'Drop your shoulders and breathe out slowly.'],       icon: ICONS.eyeClose,  anim: 'anim-breathe' },
+      { ja: ['生え際をほぐす',       '指の腹で生え際を小さく円を描きます。'],     en: ['Loosen the hairline',       'Trace small circles along the hairline.'],           icon: ICONS.scalpFull, anim: 'anim-scalp'   },
+      { ja: ['こめかみをほぐす',     '人差し指と中指でゆっくり押します。'],       en: ['Ease the temples',          'Press slowly with index and middle fingers.'],       icon: ICONS.temple,    anim: 'anim-face'    },
+      { ja: ['頭頂部をほぐす',       '両手で頭頂部を包むように押します。'],       en: ['Top of the head',           'Cup the top of your head and press gently.'],        icon: ICONS.scalpFull, anim: 'anim-scalp'   },
+      { ja: ['後頭部をほぐす',       '後頭部に指を当てて軽く圧を加えます。'],     en: ['Back of the head',          'Place fingers on the back and press gently.'],       icon: ICONS.scalpFull, anim: 'anim-scalp'   },
+      { ja: ['首の付け根をほぐす',   '後頭部の付け根に親指を当てます。'],         en: ['Base of the skull',         'Press your thumbs at the base of your skull.'],      icon: ICONS.neckBack,  anim: 'anim-neck'    },
+      { ja: ['眉間をほぐす',         '親指の腹で眉頭を軽く押します。'],           en: ['Between the brows',         'Press gently between your brows with your thumb.'],  icon: ICONS.face,      anim: 'anim-face'    },
+      { ja: ['頬骨をほぐす',         '頬骨に沿って指の腹でほぐします。'],         en: ['Along the cheekbones',      'Glide fingertips along the cheekbones.'],            icon: ICONS.jaw,       anim: 'anim-face'    },
+      { ja: ['顎のラインをほぐす',   '顎先から耳の下へ優しく押します。'],         en: ['Along the jawline',         'Press gently from the chin toward the ear.'],        icon: ICONS.jaw,       anim: 'anim-face'    },
+      { ja: ['耳たぶを引く',         '下・横・斜め上に優しく引っ張ります。'],     en: ['Pull the earlobes',         'Gently pull down, sideways, and diagonally up.'],    icon: ICONS.ear,       anim: 'anim-face'    },
+      { ja: ['首すじを伸ばす',       'ゆっくり首を左右に傾けます。'],             en: ['Stretch the neck',          'Slowly tilt your head side to side.'],               icon: ICONS.neckTilt,  anim: 'anim-neck'    },
+      { ja: ['肩の力を抜く',         '両肩をストンと落とします。'],               en: ['Release the shoulders',     'Let your shoulders drop completely.'],               icon: ICONS.shoulder,  anim: 'anim-shoulder'},
+      { ja: ['首を右にゆっくり倒す', '肩を下げたまま、ゆっくり右へ。'],           en: ['Tilt neck right',           'Keep shoulders down and tilt slowly to the right.'], icon: ICONS.neckTilt,  anim: 'anim-neck'    },
+      { ja: ['首を左にゆっくり倒す', '肩を下げたまま、ゆっくり左へ。'],           en: ['Tilt neck left',            'Keep shoulders down and tilt slowly to the left.'],  icon: ICONS.neckTilt,  anim: 'anim-neck'    },
+      { ja: ['肩をゆっくり回す',     '前から後ろへ、大きくゆっくり回します。'],   en: ['Shoulder rolls',            'Roll both shoulders slowly, forward and back.'],     icon: ICONS.shoulder,  anim: 'anim-shoulder'},
+    ]
+  },
+};
+
+// ── Storage / settings ────────────────────────────────────────────────
+const STORAGE_KEY  = 'minitcare-stars';
+const SETTINGS_KEY = 'minitcare-settings';
+
+function loadSettings() {
+  const lang = (navigator.language || 'ja').toLowerCase().startsWith('ja') ? 'ja' : 'en';
+  const defaults = { sound: true, voice: false, vibe: true, lang };
+  try { return { ...defaults, ...JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}') }; }
+  catch { return defaults; }
+}
+function saveSettings() { localStorage.setItem(SETTINGS_KEY, JSON.stringify(state.settings)); }
+
+const state = {
+  selectedKey: 'scalp',
+  stepIndex: 0,
+  stepElapsed: 0,
+  timer: null,
+  wakeLock: null,
+  lastScreen: 'home',
+  settings: loadSettings(),
+  stars: Number(localStorage.getItem(STORAGE_KEY) || 0),
+  starClaimedThisRun: false,
+};
+
+// ── Screen refs ───────────────────────────────────────────────────────
+const screens = {
+  home:      document.getElementById('homeScreen'),
+  menu:      document.getElementById('menuScreen'),
+  preAd:     document.getElementById('preAdScreen'),
+  countdown: document.getElementById('countdownScreen'),
+  timer:     document.getElementById('timerScreen'),
+  pause:     document.getElementById('pauseScreen'),
+  complete:  document.getElementById('completeScreen'),
+  settings:  document.getElementById('settingsScreen'),
+};
+
+function show(name) {
+  Object.values(screens).forEach(s => s.classList.remove('active'));
+  screens[name].classList.add('active');
+}
+
+// ── i18n helpers ──────────────────────────────────────────────────────
+function t(key) { return I18N[state.settings.lang]?.[key] ?? I18N.ja[key] ?? key; }
+
+function applyLanguage() {
+  const lang = state.settings.lang;
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    el.textContent = t(el.dataset.i18n);
+  });
+  document.querySelectorAll('[data-i18n-html]').forEach(el => {
+    el.innerHTML = t(el.dataset.i18nHtml);
+  });
+  applySwitches();
+  updateStarDisplay();
+  renderMenuList();
+}
+
+// ── Menu rendering ────────────────────────────────────────────────────
+function renderMenuList() {
+  const list = document.getElementById('menuList');
+  list.innerHTML = Object.entries(MENUS).map(([key, m]) => `
+    <button class="menu-item" data-menu="${key}">
+      <span class="mini-icon">${m.icon}</span>
+      <span>
+        <span class="menu-title">${m[state.settings.lang].label}</span>
+        <br/><span class="menu-desc">${m[state.settings.lang].desc}</span>
+      </span>
+      <span style="color:var(--muted);font-size:22px;">›</span>
+    </button>
+  `).join('');
+
+  list.querySelectorAll('.menu-item').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.selectedKey = btn.dataset.menu;
+      const m = MENUS[state.selectedKey];
+      document.getElementById('preAdTitle').textContent =
+        t('preAdStart').replace('{name}', m[state.settings.lang].label);
+      show('preAd');
+    });
+  });
+}
+
+// ── Countdown ─────────────────────────────────────────────────────────
+function runCountdown() {
+  let count = 3;
+  document.getElementById('countdownMenuName').textContent =
+    MENUS[state.selectedKey][state.settings.lang].label;
+  document.getElementById('countdownNum').textContent = count;
+  show('countdown');
+  beep();
+  const t = setInterval(() => {
+    count--;
+    if (count <= 0) { clearInterval(t); startRoutine(); return; }
+    document.getElementById('countdownNum').textContent = count;
+    beep();
+  }, 900);
+}
+
+// ── Routine ───────────────────────────────────────────────────────────
+function startRoutine() {
+  clearInterval(state.timer);
+  state.stepIndex = 0;
+  state.stepElapsed = 0;
+  state.starClaimedThisRun = false;
+  document.getElementById('rewardMessage').textContent = '';
+  document.getElementById('claimStarBtn').disabled = false;
+  show('timer');
+  requestWakeLock();
+  loadStep();
+  state.timer = setInterval(tick, 1000);
+}
+
+function tick() {
+  state.stepElapsed++;
+  const stepSec = MENUS[state.selectedKey].stepSec;
+  if (state.stepElapsed >= stepSec) {
+    state.stepIndex++;
+    if (state.stepIndex >= MENUS[state.selectedKey].moves.length) {
+      finishRoutine();
+      return;
+    }
+    state.stepElapsed = 0;
+    loadStep();
+    return;
+  }
+  updateTimerDisplay();
+}
+
+function loadStep() {
+  const menu = MENUS[state.selectedKey];
+  const moves = menu.moves;
+  const move = moves[state.stepIndex];
+  const lang = state.settings.lang;
+
+  document.getElementById('routineName').textContent = menu[lang].label;
+  document.getElementById('stepCount').textContent   = `${state.stepIndex + 1} / ${moves.length}`;
+
+  const [name, guide] = move[lang];
+  document.getElementById('stretchName').textContent  = name;
+  document.getElementById('stretchGuide').textContent = guide;
+  speakGuide(name, guide);
+
+  const pict = document.getElementById('pictogram');
+  pict.className = `pictogram ${move.anim || ''}`;
+  pict.innerHTML = move.icon;
+
+  const next = moves[state.stepIndex + 1];
+  const nextName = next ? next[lang][0] : '';
+  document.getElementById('nextMove').textContent = next
+    ? t('next').replace('{name}', nextName)
+    : t('last');
+
+  document.getElementById('inlineAd').innerHTML = '広告スペース';
+  const isLast = state.stepIndex === moves.length - 1;
+  document.getElementById('inlineAd').classList.toggle('show', isLast);
+
+  renderStepBlocks(moves.length);
+  updateTimerDisplay();
+  beep();
+  vibrate(60);
+}
+
+function updateTimerDisplay() {
+  const menu     = MENUS[state.selectedKey];
+  const stepSec  = menu.stepSec;
+  const total    = menu.moves.length * stepSec;
+  const elapsed  = state.stepIndex * stepSec + state.stepElapsed;
+  const left     = Math.max(0, total - elapsed);
+  const min      = String(Math.floor(left / 60)).padStart(2, '0');
+  const sec      = String(left % 60).padStart(2, '0');
+
+  document.getElementById('timeText').textContent =
+    state.settings.lang === 'en' ? `${min}:${sec}` : `${min}:${sec}`;
+
+  const stepLeft = Math.max(0, stepSec - state.stepElapsed);
+  const sm = String(Math.floor(stepLeft / 60)).padStart(2, '0');
+  const ss = String(stepLeft % 60).padStart(2, '0');
+  document.getElementById('currentTimeText').textContent = `${sm}:${ss}`;
+
+  document.getElementById('totalProgress').style.width = `${(elapsed / total) * 100}%`;
+  document.getElementById('stepProgress').style.width  = `${(state.stepElapsed / stepSec) * 100}%`;
+
+  [...document.getElementById('stepBlocks').children].forEach((b, i) => {
+    b.classList.toggle('done',    i < state.stepIndex);
+    b.classList.toggle('current', i === state.stepIndex);
+  });
+}
+
+function renderStepBlocks(len) {
+  document.getElementById('stepBlocks').innerHTML =
+    Array.from({ length: len }, () => `<span class="step-block"></span>`).join('');
+}
+
+function pauseRoutine()  { clearInterval(state.timer); stopSpeaking(); releaseWakeLock(); show('pause'); }
+function resumeRoutine() { show('timer'); requestWakeLock(); clearInterval(state.timer); state.timer = setInterval(tick, 1000); speakCurrentStep(); }
+function stopRoutine()   { clearInterval(state.timer); stopSpeaking(); releaseWakeLock(); show('home'); }
+
+function finishRoutine() {
+  clearInterval(state.timer);
+  stopSpeaking();
+  releaseWakeLock();
+  vibrate([150, 80, 150]);
+  beep(true);
+  updateStarDisplay();
+  show('complete');
+}
+
+// ── Star ──────────────────────────────────────────────────────────────
+function updateStarDisplay() {
+  document.getElementById('starCount').textContent =
+    t('starNow').replace('{count}', state.stars);
+}
+
+document.getElementById('claimStarBtn').addEventListener('click', () => {
+  if (state.starClaimedThisRun) {
+    document.getElementById('rewardMessage').textContent = t('alreadyClaimed');
+    return;
+  }
+  state.stars++;
+  state.starClaimedThisRun = true;
+  localStorage.setItem(STORAGE_KEY, String(state.stars));
+  document.getElementById('rewardMessage').textContent = t('claimedStar');
+  document.getElementById('claimStarBtn').disabled = true;
+  updateStarDisplay();
+});
+
+// ── Settings ──────────────────────────────────────────────────────────
+function applySwitches() {
+  document.getElementById('soundSwitch').classList.toggle('on', state.settings.sound);
+  document.getElementById('voiceSwitch').classList.toggle('on', state.settings.voice);
+  document.getElementById('vibeSwitch').classList.toggle('on', state.settings.vibe);
+  document.getElementById('langJaBtn').classList.toggle('active', state.settings.lang === 'ja');
+  document.getElementById('langEnBtn').classList.toggle('active', state.settings.lang === 'en');
+}
+
+function toggleSetting(key) {
+  state.settings[key] = !state.settings[key];
+  saveSettings();
+  applySwitches();
+  if (key === 'voice' && !state.settings.voice) stopSpeaking();
+}
+
+function setLanguage(lang) {
+  state.settings.lang = lang;
+  saveSettings();
+  applyLanguage();
+  if (screens.timer.classList.contains('active')) loadStep();
+}
+
+function openSettings(from) { state.lastScreen = from; show('settings'); }
+
+// ── Audio / vibration ─────────────────────────────────────────────────
+function beep(done = false) {
+  if (!state.settings.sound) return;
+  try {
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    const ctx = new Ctx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.value = done ? 660 : 480;
+    gain.gain.setValueAtTime(0.0001, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.07, ctx.currentTime + 0.03);
+    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.35);
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.start(); osc.stop(ctx.currentTime + 0.38);
+  } catch(e) {}
+}
+
+function vibrate(pattern) {
+  if (!state.settings.vibe || !navigator.vibrate) return;
+  navigator.vibrate(pattern);
+}
+
+function speakGuide(name, guide) {
+  if (!state.settings.voice) return;
+  if (!('speechSynthesis' in window)) return;
+  stopSpeaking();
+  const sep = state.settings.lang === 'en' ? '. ' : '。';
+  const u = new SpeechSynthesisUtterance(`${name}${sep}${guide}`);
+  u.lang = state.settings.lang === 'en' ? 'en-US' : 'ja-JP';
+  u.rate = 0.92;
+  window.speechSynthesis.speak(u);
+}
+
+function speakCurrentStep() {
+  if (!state.settings.voice) return;
+  const move = MENUS[state.selectedKey].moves[state.stepIndex];
+  if (!move) return;
+  const [name, guide] = move[state.settings.lang];
+  speakGuide(name, guide);
+}
+
+function stopSpeaking() {
+  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+}
+
+// ── Wake lock ─────────────────────────────────────────────────────────
+async function requestWakeLock() {
+  if (!('wakeLock' in navigator)) return;
+  try { state.wakeLock = await navigator.wakeLock.request('screen'); } catch(e) {}
+}
+async function releaseWakeLock() {
+  if (!state.wakeLock) return;
+  try { await state.wakeLock.release(); } catch(e) {}
+  state.wakeLock = null;
+}
+
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && screens.timer.classList.contains('active')) {
+    requestWakeLock();
+  }
+});
+
+// ── Event listeners ───────────────────────────────────────────────────
+document.getElementById('homeIcon').innerHTML = ICONS.home;
+
+document.getElementById('goMenuBtn').addEventListener('click',      () => show('menu'));
+document.getElementById('menuBackBtn').addEventListener('click',    () => show('home'));
+document.getElementById('preAdBackBtn').addEventListener('click',   () => show('menu'));
+document.getElementById('startBtn').addEventListener('click',       () => runCountdown());
+document.getElementById('pauseBtn').addEventListener('click',       pauseRoutine);
+document.getElementById('resumeBtn').addEventListener('click',      resumeRoutine);
+document.getElementById('restartBtn').addEventListener('click',     () => startRoutine());
+document.getElementById('stopBtn').addEventListener('click',        stopRoutine);
+document.getElementById('pauseEndBtn').addEventListener('click',    stopRoutine);
+document.getElementById('homeBtn').addEventListener('click',        () => show('home'));
+
+document.getElementById('homeSettingsBtn').addEventListener('click',     () => openSettings('home'));
+document.getElementById('menuSettingsBtn').addEventListener('click',     () => openSettings('menu'));
+document.getElementById('completeSettingsBtn').addEventListener('click', () => openSettings('complete'));
+document.getElementById('settingsBackBtn').addEventListener('click',     () => show(state.lastScreen));
+
+document.getElementById('soundSwitch').addEventListener('click', () => toggleSetting('sound'));
+document.getElementById('voiceSwitch').addEventListener('click', () => toggleSetting('voice'));
+document.getElementById('vibeSwitch').addEventListener('click',  () => toggleSetting('vibe'));
+document.getElementById('langJaBtn').addEventListener('click', () => setLanguage('ja'));
+document.getElementById('langEnBtn').addEventListener('click', () => setLanguage('en'));
+
+// ── Init ──────────────────────────────────────────────────────────────
+applyLanguage();
+applySwitches();
+</script>
+</body>
+</html>
