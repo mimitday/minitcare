@@ -1095,6 +1095,20 @@ const MENUS = {
       { ja: ['肩をゆっくり回す',     '前から後ろへ、大きくゆっくり回します。'],   en: ['Shoulder rolls',            'Roll both shoulders slowly, forward and back.'],     icon: ICONS.shoulder,  anim: 'anim-shoulder'},
     ]
   },
+  breathe: {
+    ja: { label: '呼吸リセット', desc: 'ゆっくり呼吸を整える 3分' },
+    en: { label: 'Breath Reset',  desc: 'Slow breathing to reset · 3 min' },
+    icon: ICONS.breathe,
+    stepSec: 30,
+    moves: [
+      { ja: ['ゆっくり目を閉じる',   '肩の力を抜いて、座り直します。'],             en: ['Close your eyes slowly',    'Settle your posture and release your shoulders.'],   icon: ICONS.eyeClose,  anim: 'anim-breathe' },
+      { ja: ['4秒かけて吸う',       '鼻からゆっくり4秒で息を吸います。'],           en: ['4-count inhale',            'Breathe in slowly through your nose for 4 counts.'], icon: ICONS.breathe,   anim: 'anim-breathe' },
+      { ja: ['4秒かけて吐く',       '口を少し開けて4秒で吐きます。'],               en: ['4-count exhale',            'Breathe out slowly through your mouth for 4 counts.'],icon: ICONS.breathe,   anim: 'anim-breathe' },
+      { ja: ['またゆっくり吸う',     'お腹が膨らむのを感じながら。'],               en: ['Inhale again',              'Feel your belly rise gently as you breathe in.'],    icon: ICONS.breathe,   anim: 'anim-breathe' },
+      { ja: ['またゆっくり吐く',     '全部吐ききって、力を抜きます。'],               en: ['Exhale fully',              'Release all the air and let go of tension.'],        icon: ICONS.breathe,   anim: 'anim-breathe' },
+      { ja: ['自然な呼吸に戻る',     'ゆっくり目を開けます。'],                     en: ['Return to natural breathing','Gently open your eyes when you are ready.'],        icon: ICONS.eyeClose,  anim: 'anim-breathe' },
+    ]
+  },
   routine: {
     ja: { label: '寝る前ルーティン', desc: '頭皮→顔→首の組み合わせ 7分半' },
     en: { label: 'Bedtime Routine',  desc: 'Scalp + face + neck · 7.5 min' },
