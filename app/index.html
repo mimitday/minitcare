@@ -458,8 +458,6 @@
     .routine-name { font-size: 18px; font-weight: 850; }
 
     /* ── Inline ad ── */
-    .inline-ad { display: none; margin: 0 0 12px; }
-    .inline-ad.show { display: grid; }
 
     /* ── Countdown ── */
     .countdown-wrap {
@@ -688,8 +686,6 @@
       <div class="current-time" id="currentTimeText">00:30</div>
       <div class="step-progress"><div id="stepProgress"></div></div>
     </div>
-
-    <div class="inline-ad ad-space" id="inlineAd">広告スペース</div>
 
     <div class="pictogram" id="pictogram"></div>
     <div class="stretch-name" id="stretchName"></div>
@@ -1276,10 +1272,6 @@ function loadStep() {
   document.getElementById('nextMove').textContent = next
     ? t('next').replace('{name}', nextName)
     : t('last');
-
-  document.getElementById('inlineAd').innerHTML = '広告スペース';
-  const isLast = state.stepIndex === moves.length - 1;
-  document.getElementById('inlineAd').classList.toggle('show', isLast);
 
   renderStepBlocks(moves.length);
   updateTimerDisplay();
