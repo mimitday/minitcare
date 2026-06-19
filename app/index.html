@@ -624,8 +624,21 @@
         <div class="lead" data-i18n-html="lead">自分を否定する前に、<br />まずMinitCareを開こう。</div>
       </div>
     </div>
+    <button class="button" id="goGassaMenuBtn">🪨 かっさケア</button>
     <button class="button" id="goMenuBtn" data-i18n="start">はじめる</button>
     <div class="footer-note" data-i18n="medNote">医療行為・治療目的ではありません。痛みがある時は中止してください。</div>
+  </section>
+
+  <!-- Gassa Menu -->
+  <section id="gassaMenuScreen" class="screen">
+    <div class="topbar">
+      <button class="icon-button" id="gassaMenuBackBtn" aria-label="戻る">←</button>
+      <div class="brand">かっさケア</div>
+      <div></div>
+    </div>
+    <h2>どこをほぐす？</h2>
+    <div class="menu-list" id="gassaMenuList"></div>
+    <div class="menu-footer" data-i18n="menuFooter">メニュー選択後、開始前に広告が入ります</div>
   </section>
 
   <!-- Menu -->
@@ -1125,6 +1138,39 @@ const MENUS = {
       { ja: ['自然な呼吸に戻る',     'ゆっくり目を開けます。'],                     en: ['Return to natural breathing','Gently open your eyes when you are ready.'],        icon: ICONS.eyeClose,  anim: 'anim-breathe' },
     ]
   },
+  gassaFace: {
+    ja: { label: '顔かっさ',              desc: 'かっさでフェイスラインを整える 4分' },
+    en: { label: 'Face Gua Sha',           desc: 'Sculpt your face with gua sha · 4 min' },
+    icon: ICONS.face,
+    stepSec: 30,
+    moves: [
+      { ja: ['ゆっくり目を閉じる',       '肩の力を抜いて、深く息を吐きます。'],     en: ['Close your eyes slowly',      'Drop your shoulders and breathe out slowly.'],                       icon: ICONS.eyeClose, anim: 'anim-breathe' },
+      { ja: ['かっさを温める',           '両手で挟んで体温を伝えます。'],           en: ['Warm the gua sha tool',        'Hold it between your palms to warm it up.'],                         icon: ICONS.face,     anim: 'anim-breathe' },
+      { ja: ['あごからフェイスラインへ', 'かっさを顎から耳へ優しく流します。'],     en: ['Chin to jawline',              'Glide the tool gently from chin to ear.'],                           icon: ICONS.jaw,      anim: 'anim-face'    },
+      { ja: ['頬骨に沿って流す',         '目の下から耳に向かって流します。'],       en: ['Along the cheekbones',         'Glide from under the eye toward the ear.'],                          icon: ICONS.jaw,      anim: 'anim-face'    },
+      { ja: ['眉間から額へ',             '眉間を起点に上方向へ流します。'],         en: ['Brow to forehead',             'Glide upward from between the brows.'],                              icon: ICONS.face,     anim: 'anim-face'    },
+      { ja: ['こめかみをほぐす',         'かっさで円を描くようにほぐします。'],     en: ['Ease the temples',             'Move the tool in small circles at the temples.'],                    icon: ICONS.temple,   anim: 'anim-face'    },
+      { ja: ['耳の前から首筋へ',         '耳の前を通り、鎖骨へ向けて流します。'],   en: ['Temple to neck',               'Guide the tool past the ear and down toward the collarbone.'],       icon: ICONS.neckBack, anim: 'anim-neck'    },
+      { ja: ['深呼吸でリセット',         '吸って、吐いて、頭の力を手放します。'],   en: ['Reset with a breath',          'Breathe in, breathe out, and release the tension.'],                 icon: ICONS.breathe,  anim: 'anim-breathe' },
+    ]
+  },
+  gassaNeck: {
+    ja: { label: '首・デコルテかっさ',    desc: 'かっさで首とデコルテを整える 4分半' },
+    en: { label: 'Neck & Décolletage',    desc: 'Neck and chest release with gua sha · 4.5 min' },
+    icon: ICONS.neckBack,
+    stepSec: 30,
+    moves: [
+      { ja: ['ゆっくり目を閉じる',       '肩の力を抜いて、深く息を吐きます。'],     en: ['Close your eyes slowly',      'Drop your shoulders and breathe out slowly.'],                       icon: ICONS.eyeClose,  anim: 'anim-breathe'  },
+      { ja: ['耳下から首筋を流す',       '耳の下から鎖骨へ向けて流します。'],       en: ['Ear to collarbone',            'Glide from below the ear down to the collarbone.'],                  icon: ICONS.neckBack,  anim: 'anim-neck'     },
+      { ja: ['首の右側を流す',           '右耳下から鎖骨右へ優しく。'],             en: ['Right side of neck',           'Glide gently from the right ear to the right collarbone.'],          icon: ICONS.neckTilt,  anim: 'anim-neck'     },
+      { ja: ['首の左側を流す',           '左耳下から鎖骨左へ優しく。'],             en: ['Left side of neck',            'Glide gently from the left ear to the left collarbone.'],            icon: ICONS.neckTilt,  anim: 'anim-neck'     },
+      { ja: ['首の前を整える',           '喉元から鎖骨中央へ優しく流します。'],     en: ['Front of neck',                'Glide gently from the throat to the center of the collarbone.'],     icon: ICONS.neckBack,  anim: 'anim-neck'     },
+      { ja: ['鎖骨上をほぐす',           'かっさを鎖骨に沿わせて流します。'],       en: ['Along the collarbone',         'Glide along the collarbone from center to shoulder.'],               icon: ICONS.shoulder,  anim: 'anim-shoulder' },
+      { ja: ['デコルテを広げる',         '鎖骨から肩先へ向けて流します。'],         en: ['Open the décolletage',         'Glide from the collarbone outward toward the shoulder.'],            icon: ICONS.shoulder,  anim: 'anim-shoulder' },
+      { ja: ['肩の力を抜く',             '両肩をストンと落とします。'],             en: ['Release the shoulders',        'Let your shoulders drop completely.'],                               icon: ICONS.shoulder,  anim: 'anim-shoulder' },
+      { ja: ['深呼吸でリセット',         '吸って、吐いて、頭の力を手放します。'],   en: ['Reset with a breath',          'Breathe in, breathe out, and release the tension.'],                 icon: ICONS.breathe,   anim: 'anim-breathe'  },
+    ]
+  },
   routine: {
     ja: { label: '寝る前ルーティン', desc: '頭皮→顔→首の組み合わせ 7分半' },
     en: { label: 'Bedtime Routine',  desc: 'Scalp + face + neck · 7.5 min' },
@@ -1169,6 +1215,7 @@ const state = {
   timer: null,
   wakeLock: null,
   lastScreen: 'home',
+  lastMenu: 'menu',
   settings: loadSettings(),
   stars: Number(localStorage.getItem(STORAGE_KEY) || 0),
   starClaimedThisRun: false,
@@ -1178,6 +1225,7 @@ const state = {
 const screens = {
   home:      document.getElementById('homeScreen'),
   menu:      document.getElementById('menuScreen'),
+  gassaMenu: document.getElementById('gassaMenuScreen'),
   preAd:     document.getElementById('preAdScreen'),
   countdown: document.getElementById('countdownScreen'),
   timer:     document.getElementById('timerScreen'),
@@ -1211,7 +1259,7 @@ function applyLanguage() {
 // ── Menu rendering ────────────────────────────────────────────────────
 function renderMenuList() {
   const list = document.getElementById('menuList');
-  list.innerHTML = Object.entries(MENUS).map(([key, m]) => `
+  list.innerHTML = Object.entries(MENUS).filter(([key]) => !key.startsWith('gassa')).map(([key, m]) => `
     <button class="menu-item" data-menu="${key}">
       <span class="mini-icon">${m.icon}</span>
       <span>
@@ -1225,6 +1273,35 @@ function renderMenuList() {
   list.querySelectorAll('.menu-item').forEach(btn => {
     btn.addEventListener('click', () => {
       state.selectedKey = btn.dataset.menu;
+      state.lastMenu = 'menu';
+      const m = MENUS[state.selectedKey];
+      document.getElementById('preAdTitle').textContent =
+        t('preAdStart').replace('{name}', m[state.settings.lang].label);
+      show('preAd');
+    });
+  });
+}
+
+function renderGassaMenuList() {
+  const list = document.getElementById('gassaMenuList');
+  const gassaKeys = ['gassaFace', 'gassaNeck'];
+  list.innerHTML = gassaKeys.map(key => {
+    const m = MENUS[key];
+    return `
+      <button class="menu-item" data-menu="${key}">
+        <span class="mini-icon">${m.icon}</span>
+        <span>
+          <span class="menu-title">${m[state.settings.lang].label}</span>
+          <br/><span class="menu-desc">${m[state.settings.lang].desc}</span>
+        </span>
+        <span style="color:var(--muted);font-size:22px;">›</span>
+      </button>
+    `;
+  }).join('');
+  list.querySelectorAll('.menu-item').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.selectedKey = btn.dataset.menu;
+      state.lastMenu = 'gassaMenu';
       const m = MENUS[state.selectedKey];
       document.getElementById('preAdTitle').textContent =
         t('preAdStart').replace('{name}', m[state.settings.lang].label);
@@ -1472,8 +1549,10 @@ document.addEventListener('visibilitychange', () => {
 document.getElementById('homeIcon').innerHTML = ICONS.home;
 
 document.getElementById('goMenuBtn').addEventListener('click',      () => show('menu'));
+document.getElementById('goGassaMenuBtn').addEventListener('click', () => { renderGassaMenuList(); show('gassaMenu'); });
+document.getElementById('gassaMenuBackBtn').addEventListener('click', () => show('home'));
 document.getElementById('menuBackBtn').addEventListener('click',    () => show('home'));
-document.getElementById('preAdBackBtn').addEventListener('click',   () => show('menu'));
+document.getElementById('preAdBackBtn').addEventListener('click',   () => show(state.lastMenu));
 document.getElementById('startBtn').addEventListener('click',       () => runCountdown());
 document.getElementById('pauseBtn').addEventListener('click',       pauseRoutine);
 document.getElementById('resumeBtn').addEventListener('click',      resumeRoutine);
